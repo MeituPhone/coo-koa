@@ -1,0 +1,29 @@
+{
+  "name": "coo-koa",
+  "version": "0.0.1",
+  "description": "web base on koa",
+  "main": "app.js",
+  "dependencies": {
+    "7": "^0.0.1",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coocssweb/coo-koa.git"
+  },
+  "keywords": [
+    "koa"
+  ],
+  "author": "coocssweb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coocssweb/coo-koa/issues"
+  },
+  "homepage": "https://github.com/coocssweb/coo-koa#readme"
+}
