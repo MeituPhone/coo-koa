@@ -2,6 +2,7 @@
 let signin = async (ctx, next) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
+    console.log('sss');
     ctx.body = JSON.stringify({
         username,
         password
@@ -10,9 +11,10 @@ let signin = async (ctx, next) => {
 
 // 测试:: get
 let test = async (ctx, next) => {
-    name = ctx.params.name;
+    let name = ctx.params.name;
     ctx.body = JSON.stringify({
-        name
+        name,
+        page: 'page/login.js'
     });
 };
 
