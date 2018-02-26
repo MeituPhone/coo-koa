@@ -1,6 +1,9 @@
 const Koa = require('koa');
 const app = new  Koa();
 const bodyParser = require('koa-bodyparser');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://127.0.0.1:12345/imooc');
 
 // 引用bodyparser 中间件
 app.use(bodyParser({

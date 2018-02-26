@@ -1,12 +1,13 @@
+let UserHandle = require('../dao/handle/user');
+
 // 登录接口:: post
 let signin = async (ctx, next) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
-    console.log('sss');
-    ctx.body = JSON.stringify({
-        username,
-        password
-    });
+    UserHandle.create({username, password});
+    // User.featch(function(err, user){
+    //     ctx.body = JSON.stringify(user);
+    // });
 };
 
 // 测试:: get
