@@ -7,21 +7,21 @@ let signin = async (ctx, next) => {
     UserHandle.create({username, password}).then((user) => {
         console.log(user);
     });
-    // User.featch(function(err, user){
-    //     ctx.body = JSON.stringify(user);
-    // });
 };
 
 // 测试:: get
-let test = async (ctx, next) => {
+let get = async (ctx, next) => {
     let name = ctx.params.name;
+    let user;
+    await UserHandle.findByName(name).then((response) => {
+        user = response;
+    } );
     ctx.body = JSON.stringify({
-        name,
-        page: 'page/login.js'
+        user
     });
 };
 
 module.exports = {
     signin,
-    test
+    get
 };

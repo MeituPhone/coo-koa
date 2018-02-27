@@ -30,13 +30,11 @@ UserSchema.pre('save', function(next) {
 
 // 静态查询方法
 UserSchema.statics = {
-    fetch: function(cb) {
-       return this.find({}).sort('meta.updateAt');
-       exec(cb);
+    fetch: function() {
+       return this.find({}).sort('meta.updateAt').exec();
     },
-    findById: function(id, cb) {
-        return this.findOne({_id: id});
-        exec(cb);
+    findByName: function(name) {
+        return this.findOne({username: name}).exec();
     }
 };
 

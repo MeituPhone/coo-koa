@@ -34,7 +34,7 @@ module.exports = {
         _user.fetch()
     },
     // 单条
-    findOne: function(id) {
-        User.findById(id);
+    findByName: async function (name) {
+        return User.findByName(name);
     }
 };
