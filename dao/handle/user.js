@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 let User = require('../models/user');
+let Promise = mongoose.Promise;
 
 module.exports = {
     // 增加数据
@@ -10,12 +11,14 @@ module.exports = {
             status: 1
         });
 
-        _user.save((err, user) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(user._id);
-            }
+        return new Promise((resolve, reject) => {
+            _user.save((error, user) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(user);
+                }
+            });
         });
     },
     // 修改数据
@@ -28,10 +31,10 @@ module.exports = {
     },
     // 获取
     fetch: function(page, size) {
-
+        _user.fetch()
     },
     // 单条
     findOne: function(id) {
-
+        User.findById(id);
     }
 };

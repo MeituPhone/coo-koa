@@ -4,7 +4,9 @@ let UserHandle = require('../dao/handle/user');
 let signin = async (ctx, next) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
-    UserHandle.create({username, password});
+    UserHandle.create({username, password}).then((user) => {
+        console.log(user);
+    });
     // User.featch(function(err, user){
     //     ctx.body = JSON.stringify(user);
     // });
