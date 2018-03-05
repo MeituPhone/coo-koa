@@ -1,8 +1,12 @@
-const router = require('koa-router')();
+const Router = require('koa-router');
 const userControl = require('../controllers/user');
 
-router.get('/api/user/:name', userControl.get);
-router.post('/api/signin', userControl.signin);
+var routter = new Router({
+    prefix: '/api/user'
+  }); 
+
+router.get('/:name', userControl.get);
+router.post('/signin', userControl.signin);
 
 
 module.exports = router;
