@@ -4,18 +4,16 @@ let UserHandle = require('../dao/handle/user');
 let signin = async (ctx, next) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
-    UserHandle.create({username, password}).then((user) => {
-        console.log(user);
+    let result = await UserHandle.create({username, password});
+    ctx.body = JSON.stringify({
+        result
     });
 };
 
 // 测试:: get
 let get = async (ctx, next) => {
     let name = ctx.params.name;
-    let user;
-    await UserHandle.findByName(name).then((response) => {
-        user = response;
-    } );
+    let user = await UserHandle.findByName(name);
     ctx.body = JSON.stringify({
         user
     });
