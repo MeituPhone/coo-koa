@@ -11,7 +11,7 @@ app.use(bodyParser({
   enableTypes:['json']
 }));
 
-app.use(routers.routes()).use(router.allowedMethods());
+app.use(routers.routes()).use(routers.allowedMethods());
 
 app.listen(3000);
 console.log('app started at port 3000 ....');
