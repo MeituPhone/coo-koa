@@ -1,7 +1,7 @@
-let mongoose = require('mongoose');
+import Mongoose from 'mongoose';
 
 // 定义模式
-let UserSchema = new mongoose.Schema({
+let UserSchema = new Mongoose.Schema({
     username: String,
     password: String,
     status: Number,

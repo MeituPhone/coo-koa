@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-let User = require('../models/user');
-let Promise = mongoose.Promise;
+import Mongoose from 'mongoose';
+import User from '../models/user';
+let Promise = Mongoose.Promise;
 
 module.exports = {
     // 增加数据

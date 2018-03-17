@@ -1,7 +1,7 @@
 # 开发工具
 IDE: Visual Studio Code ,方便断点调试
 
-自动重启：supervisor，修改node代码后，自动重启node 服务
+自动重启：nodemon，修改node代码后，自动重启node 服务
 
 ## mac 下 mongodb 安装
 1、mac下载路径：[mongodb下载](https://www.mongodb.com/dr/fastdl.mongodb.org/osx/mongodb-osx-ssl-x86_64-3.6.3.tgz/download)
@@ -45,7 +45,7 @@ fork = true
 `npm install`
 
 ## 启动代码
-`supervisor node app.js`
+`npm start`
 
 ## 目录说明
 

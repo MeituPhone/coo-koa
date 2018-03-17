@@ -1,6 +1,6 @@
-let mongoose = require('mongoose');
-let UserSchema = require('../schemas/user');
+import Mongoose from 'mongoose';
+import UserSchema from '../schemas/user';
 
-let User = mongoose.model('user', UserSchema);
+let User = Mongoose.model('user', UserSchema);
 
 module.exports = User;
