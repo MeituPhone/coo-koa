@@ -1,25 +1,18 @@
-const mongoose = require('mongoose');
-let User = require('../models/user');
-let Promise = mongoose.Promise;
+import Mongoose from 'mongoose';
+import User from '../models/user';
+let Promise = Mongoose.Promise;
 
 module.exports = {
     // 增加数据
-    create: ({username, password}) => {
+    create: async ({username, password}) => {
         let _user = new User({
             username,
             password,
             status: 1
         });
 
-        return new Promise((resolve, reject) => {
-            _user.save((error, user) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(user);
-                }
-            });
-        });
+        let result = await _user.save();
+        return result;
     },
     // 修改数据
     update: (user) => {
