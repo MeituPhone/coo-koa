@@ -1,18 +1,19 @@
 import Mongoose from 'mongoose';
 import User from '../models/user';
-let Promise = Mongoose.Promise;
 
 module.exports = {
     // 增加数据
-    create: async ({username, password}) => {
+    create: async ({uid, username, password, userinfo, platform}) => {
         let _user = new User({
+            uid,
             username,
             password,
-            status: 1
+            userinfo,
+            platform,
+            status: 1,
         });
 
-        let result = await _user.save();
-        return result;
+        return await _user.save();
     },
     // 修改数据
     update: (user) => {
@@ -24,7 +25,7 @@ module.exports = {
     },
     // 获取
     fetch: function(page, size) {
-        _user.fetch()
+        User.fetch()
     },
     // 单条
     findByName: async function (name) {

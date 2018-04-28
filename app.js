@@ -13,11 +13,9 @@ const app = new  Koa();
 app.use(Convert(Cors()))
 
 // 引用bodyparser 中间件
-app.use(BodyParser({
-  enableTypes:['json']
-}));
+app.use(BodyParser());
 
 app.use(routes.routes(), routes.allowedMethods());
 
 app.listen(3000);
-console.log('app started at port 3000 ....');
+console.log('app sctarted at port 3000 ....');

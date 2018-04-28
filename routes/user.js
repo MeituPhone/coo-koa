@@ -5,7 +5,8 @@ let router = new Router({
     prefix: '/api/user'
   }); 
 
-router.get('/:name', userControl.get);
-router.post('/signin', userControl.signin);
+router.get('', userControl.get);
+router.post('', userControl.create);
+
 
 export default router;
