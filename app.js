@@ -1,16 +1,19 @@
 import Koa from 'koa';
 import Cors from'koa-cors';
 import BodyParser from 'koa-bodyparser';
-import Mongoose from 'mongoose';
 import Convert from 'koa-convert';
+import passport from 'koa-passport';
 import routes from'./routes';
-
-Mongoose.connect('mongodb://127.0.0.1:12345/imooc');
+import './config/mongo_database';
+import './config/redis_database';
 
 const app = new  Koa();
 
+// 初始化 passport 验证模块
+app.use(passport.initialize());
+
 // 跨域处理
-app.use(Convert(Cors()))
+app.use(Convert(Cors()));
 
 // 引用bodyparser 中间件
 app.use(BodyParser());

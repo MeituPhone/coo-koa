@@ -1,19 +1,27 @@
 /**
- * 用户密码校验
- * Created by 王佳欣 on 2018/4/28.
+ * passport验证
+ * Created by 王佳欣 on 2018/4/30.
  */
-import Bcrypt from 'bcrypt';
-import Promise from 'bluebird';
-Promise.promisifyAll(Bcrypt);
+import passport from 'koa-passport';
+import {Strategy} from 'passport-http-bearer';
+import Administrator from '../dao/models/administrator';
+import JWT from  'jsonwebtoken';
+import {TOKE_SECRET_KEY} from '../consts';
 
-// 密码密码加密
-export const encrypt = async function (password) {
-    let salt = await Bcrypt.genSaltAsync(10);
-    let hash = await Bcrypt.hashAsync(password, salt);
-    return hash;
-};
-
-// 密码校验
-export const validate = async function (password, hash) {
-    return await Bcrypt.compareAsync(password, hash);
-};
+passport.use(new Strategy(
+    function (token, done) {
+        JWT.verify(token, TOKE_SECRET_KEY, (error, decoded) => {
+            if (error) {
+                return  done(null, false, { msg: error.name });
+            }
+            Administrator.findByName(decoded.name).then((administrator) => {
+                if (!administrator) {
+                    return  done(null, false, { msg: 'Incorrect token.' })
+                }
+                return done(null, administrator);
+            }).catch((error) => {
+                return done(null, false, {msg: JSON.stringify(error)});
+            });
+        });
+    }
+));
