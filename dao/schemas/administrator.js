@@ -15,7 +15,6 @@ let AdministratorSchema = new Mongoose.Schema({
     password: String,
     nickname: String,
     avatar: Object,
-    token: String,
     status: Number,
     meta: {
         createAt: {

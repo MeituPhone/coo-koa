@@ -54,34 +54,10 @@ module.exports = {
                                 , { expiresIn: 60 * 60 }
                             );
 
-                            administrator.token = token;
-
-                            administrator.save().then((result) => {
-                                resolve({
-                                    token
-                                });
-                            }).catch((e) => {
-                                reject({...MSG.TOKEN_ERROR});
-                            });
+                            resolve({ token });
                         } else {
                             reject( {...PASSWORD_ERROR});
                         }
-                    });
-                }
-            });
-        });
-    },
-    logout: async function (name) {
-        return new Promise((resolve, reject) => {
-            Administrator.findByName(name).then((administrator) => {
-                if (!administrator) {
-                    reject({code: 600011, msg: 'Incorrect token.'});
-                } else {
-                    administrator.token = '';
-                    administrator.save().then(() => {
-                        resolve({});
-                    }).catch((e) => {
-                        reject({code: 600012, msg: 'Incorrect update token'});
                     });
                 }
             });

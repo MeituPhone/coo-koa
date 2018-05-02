@@ -4,8 +4,8 @@ import BodyParser from 'koa-bodyparser';
 import Convert from 'koa-convert';
 import passport from 'koa-passport';
 import routes from'./routes';
-import './config/mongo_database';
-import './config/redis_database';
+import './config/mongo_database.js';
+import './config/redis_database.js';
 
 const app = new  Koa();
 

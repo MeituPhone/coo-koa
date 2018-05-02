@@ -4,9 +4,9 @@
  */
 import MSG from '../consts/msg';
 import administratorHandle from'../dao/handle/administrator';
+import {expireToken, getToken} from '../utils/tokenManager';
 import JWT from  'jsonwebtoken';
-import tokenManager from '../utils/tokenManager';
-
+import {TOKE_SECRET_KEY} from '../consts';
 
 // 注册
 let create = async (ctx, next) => {
@@ -35,11 +35,40 @@ let update = async (ctx, next) => {
     });
 };
 
-// 测试
+// 根据用户名获取用户
 let get = async (ctx, next) => {
     let name = ctx.params.name;
-    let administrator = await administratorHandle.findByName(name) || {};
-    ctx.body = JSON.stringify(administrator);
+    await administratorHandle.findByName(name).then((result) => {
+        result = JSON.parse(JSON.stringify(result));
+        delete result.password;
+        result.id = result._id;
+        delete result._id;
+        ctx.body = JSON.stringify({result});
+    }).catch((error) => {
+        ctx.body = JSON.stringify({error});
+    });
+};
+
+// 当前用户
+let current = async (ctx, next) => {
+    let token = getToken(ctx.request.headers);
+    await JWT.verify(token, TOKE_SECRET_KEY, (error, decoded) => {
+        if (error) {
+            ctx.body = JSON.stringify({});
+        }
+        return administratorHandle.findByName(decoded.name).then((result) => {
+            if (!result) {
+                ctx.body = JSON.stringify({});
+            }
+            result = JSON.parse(JSON.stringify(result));
+            delete result.password;
+            result.id = result._id;
+            delete result._id;
+            ctx.body = JSON.stringify(result);
+        }).catch((error) => {
+            ctx.body = JSON.stringify({});
+        });
+    });
 };
 
 // 登录
@@ -54,18 +83,14 @@ let login = async (ctx, next) => {
 
 // 退出
 let logout = async (ctx, next) => {
-    let decode = JWT.decode(ctx.header.authorization.replace('bearer ', ''));
-
-    await administratorHandle.logout(decode.name).then((result) => {
-        ctx.body = JSON.stringify({result});
-    }).catch((error) => {
-        ctx.body = JSON.stringify({error});
-    });
+    expireToken(ctx);
+    ctx.body = JSON.stringify({});
 };
 
 module.exports = {
     create,
     get,
+    current,
     login,
     logout
 };
