@@ -40,6 +40,9 @@ logpath = log/mongod.log
 fork = true
 ```
 
+## mongodb 配置文档
+https://docs.mongodb.com/manual/reference/configuration-options/
+
 
 ## 安装配置
 `npm install`
