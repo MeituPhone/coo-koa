@@ -1,7 +1,7 @@
 import userHandle from'../dao/handle/user';
 
-// 登录接口:: post
-let signin = async (ctx, next) => {
+// 注册:: post
+let create = async (ctx, next) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
     let result = await userHandle.create({username, password});
@@ -10,9 +10,18 @@ let signin = async (ctx, next) => {
     });
 };
 
+// 更新信息:: put
+let update = async (ctx, next) => {
+    let {username, password} = ctx.request.body;
+    let result = userHandle.update({username, password});
+    cxt.body = JSON.stringify({
+        result
+    });
+};
+
 // 测试:: get
 let get = async (ctx, next) => {
-    let name = ctx.params.name;
+    let name = ctx.request.query.name;
     let user = await userHandle.findByName(name);
     ctx.body = JSON.stringify({
         user
@@ -20,6 +29,6 @@ let get = async (ctx, next) => {
 };
 
 module.exports = {
-    signin,
+    create,
     get
 };

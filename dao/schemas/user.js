@@ -2,8 +2,11 @@ import Mongoose from 'mongoose';
 
 // 定义模式
 let UserSchema = new Mongoose.Schema({
+    uid: String,
     username: String,
     password: String,
+    userinfo: Object,
+    platform: String,
     status: Number,
     meta: {
         createAt: {
