@@ -1,5 +1,11 @@
 # 接口规范
-接口采用RESTful API规范，
+接口采用RESTful API规范，如下：
+* http://localhost:3000/api/administrators/auth/login
+* http://localhost:3000/api/administrators/auth/logout
+* http://localhost:3000/api/administrators/auth/me
+* http://localhost:3000/api/administrators/create
+* http://localhost:3000/api/administrators/?page=1&per_page=10
+* http://localhost:3000/api/administrators/:id
 
 
 # 开发工具

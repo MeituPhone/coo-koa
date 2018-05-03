@@ -59,7 +59,7 @@ AdministratorSchema.statics = {
         return this.find({...query}, {password: 0}).skip(skip).limit(limit).sort('meta.updateAt').exec();
     },
     findByName: function(name) {
-        return this.findOne({administrator: name}).exec();
+        return this.findOne({administrator: name}, {password: 0, meta: 0}).exec();
     },
     findById: function (id) {
         return this.findOne({_id: ObjectID(id)}, {password: 0, meta: 0}).exec();
