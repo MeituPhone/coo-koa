@@ -44,7 +44,7 @@ module.exports = {
     },
     login: async function (name, password) {
         return new Promise((resolve, reject) => {
-            Administrator.findByName(name).then((administrator) => {
+            Administrator.findByName(name, true).then((administrator) => {
                 if (!administrator) {
                     reject({code: 600001, msg: '用户名不存在'});
                 } else {

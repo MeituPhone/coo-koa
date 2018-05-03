@@ -56,13 +56,20 @@ AdministratorSchema.methods = {
 // 静态查询方法
 AdministratorSchema.statics = {
     fetch: function (query ,skip, limit) {
-        return this.find({...query}, {password: 0}).skip(skip).limit(limit).sort('meta.updateAt').exec();
+        return this.find({...query}, {password: 0}).skip(skip).limit(limit).sort('meta.updateAt');
     },
-    findByName: function(name) {
-        return this.findOne({administrator: name}, {password: 0, meta: 0}).exec();
+    findByName: function(name, checkPwd = false) {
+        let options = {
+            meta: 0
+        };
+
+        if (!checkPwd) {
+            options.password = 0;
+        }
+        return this.findOne({administrator: name}, options);
     },
     findById: function (id) {
-        return this.findOne({_id: ObjectID(id)}, {password: 0, meta: 0}).exec();
+        return this.findOne({_id: ObjectID(id)}, {password: 0, meta: 0});
     }
 };
 

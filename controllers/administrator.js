@@ -83,7 +83,6 @@ let list = async (ctx, next) => {
 // 登录
 let login = async (ctx, next) => {
     let {name, password} = ctx.request.body;
-    console.log(name, password, 'sss');
     await administratorHandle.login(name, password).then((result) => {
         ctx.body = JSON.stringify(result);
     }).catch((error) => {
