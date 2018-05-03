@@ -12,11 +12,7 @@ import {TOKE_SECRET_KEY} from '../consts';
 let create = async (ctx, next) => {
     let { administrator, password, nickname, avatar } = ctx.request.body;
     await administratorHandle.create({administrator, password, nickname, avatar}).then((result) => {
-        result = JSON.parse(JSON.stringify(result));
-        delete result.password;
-        result.id = result._id;
-        delete result._id;
-        ctx.body = JSON.stringify({result});
+        ctx.body = JSON.stringify(result);
     }).catch((error) => {
         ctx.body = JSON.stringify({
             error: {
@@ -47,11 +43,7 @@ let get = async (ctx, next) => {
             return ctx.body = JSON.stringify({});
         }
 
-        result = JSON.parse(JSON.stringify(result));
-        delete result.password;
-        result.id = result._id;
-        delete result._id;
-        ctx.body = JSON.stringify({result});
+        ctx.body = JSON.stringify(result);
     }).catch((error) => {
         console.log(error);
         ctx.body = JSON.stringify({error});
@@ -69,10 +61,6 @@ let me = async (ctx, next) => {
             if (!result) {
                 ctx.body = JSON.stringify({});
             }
-            result = JSON.parse(JSON.stringify(result));
-            delete result.password;
-            result.id = result._id;
-            delete result._id;
             ctx.body = JSON.stringify(result);
         }).catch((error) => {
             ctx.body = JSON.stringify({});
@@ -82,15 +70,22 @@ let me = async (ctx, next) => {
 
 // 列表
 let list = async (ctx, next) => {
-    let {page, pagesize} = ctx.request.query;
+    let {page = 1, per_page = 10} = ctx.request.query;
 
+    let skip = (page - 1) * per_page;
+    await administratorHandle.fetch({}, skip, per_page).then((result) => {
+        ctx.body = JSON.stringify(result || []);
+    }).catch(error => {
+        ctx.body = JSON.stringify({error});
+    });
 };
 
 // 登录
 let login = async (ctx, next) => {
     let {name, password} = ctx.request.body;
+    console.log(name, password, 'sss');
     await administratorHandle.login(name, password).then((result) => {
-        ctx.body = JSON.stringify({result});
+        ctx.body = JSON.stringify(result);
     }).catch((error) => {
         ctx.body = JSON.stringify({error});
     });

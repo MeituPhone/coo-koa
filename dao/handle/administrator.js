@@ -33,8 +33,8 @@ module.exports = {
 
     },
     // 获取
-    fetch: function(page, size) {
-        Administrator.fetch()
+    fetch: function(query = {}, skip, limit) {
+        return Administrator.fetch(query, skip, limit);
     },
     findByName: async function (name) {
         return Administrator.findByName(name);

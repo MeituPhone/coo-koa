@@ -5,7 +5,7 @@ import administratorControl from '../controllers/administrator';
 import {verifyToken} from '../utils/tokenManager';
 
 let router = new Router({
-    prefix: '/api/administrator'
+    prefix: '/api/administrators'
 });
 
 // 用户
