@@ -36,9 +36,11 @@ module.exports = {
     fetch: function(page, size) {
         Administrator.fetch()
     },
-    // 单条
     findByName: async function (name) {
         return Administrator.findByName(name);
+    },
+    findById: async function (id) {
+        return Administrator.findById(id);
     },
     login: async function (name, password) {
         return new Promise((resolve, reject) => {

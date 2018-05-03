@@ -9,14 +9,20 @@ let router = new Router({
 });
 
 // 用户
-router.get('/:name', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.get);
-// 当前用户
-router.get('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.current);
+router.get('/:id', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.get);
+
+// 列表
+router.get('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.list);
+
 // 创建
-router.post('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.create);
+router.post('/', administratorControl.create);
+
+// 当前用户
+router.get('/auth/me', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.me);
 
 // 登录
 router.post('/auth/login', administratorControl.login);
+
 // 退出
 router.get('/auth/logout', administratorControl.logout);
 

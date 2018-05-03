@@ -3,6 +3,7 @@
  * Created by 王佳欣 on 2018/4/28.
  */
 import Mongoose from 'mongoose';
+import {ObjectID} from 'mongodb';
 import {validate, encrypt} from '../../utils/encryption';
 
 // 定义模式
@@ -59,6 +60,9 @@ AdministratorSchema.statics = {
     },
     findByName: function(name) {
         return this.findOne({administrator: name}).exec();
+    },
+    findById: function (id) {
+        return this.find({_id: ObjectID(id)}).exec();
     }
 };
 

@@ -8,10 +8,10 @@ import {expireToken, getToken} from '../utils/tokenManager';
 import JWT from  'jsonwebtoken';
 import {TOKE_SECRET_KEY} from '../consts';
 
-// 注册
+// 创建管理员
 let create = async (ctx, next) => {
     let { administrator, password, nickname, avatar } = ctx.request.body;
-    administratorHandle.create({administrator, password, nickname, avatar}).then((result) => {
+    await administratorHandle.create({administrator, password, nickname, avatar}).then((result) => {
         result = JSON.parse(JSON.stringify(result));
         delete result.password;
         result.id = result._id;
@@ -35,22 +35,31 @@ let update = async (ctx, next) => {
     });
 };
 
-// 根据用户名获取用户
+// 根据id获取用户
 let get = async (ctx, next) => {
-    let name = ctx.params.name;
-    await administratorHandle.findByName(name).then((result) => {
+    let {id} = ctx.params;
+    if (!id) {
+        return ctx.body = JSON.stringify({error});
+    }
+
+    await administratorHandle.findById(id).then((result) => {
+        if (!result) {
+            return ctx.body = JSON.stringify({});
+        }
+
         result = JSON.parse(JSON.stringify(result));
         delete result.password;
         result.id = result._id;
         delete result._id;
         ctx.body = JSON.stringify({result});
     }).catch((error) => {
+        console.log(error);
         ctx.body = JSON.stringify({error});
     });
 };
 
 // 当前用户
-let current = async (ctx, next) => {
+let me = async (ctx, next) => {
     let token = getToken(ctx.request.headers);
     await JWT.verify(token, TOKE_SECRET_KEY, (error, decoded) => {
         if (error) {
@@ -69,6 +78,12 @@ let current = async (ctx, next) => {
             ctx.body = JSON.stringify({});
         });
     });
+};
+
+// 列表
+let list = async (ctx, next) => {
+    let {page, pagesize} = ctx.request.query;
+
 };
 
 // 登录
@@ -90,7 +105,9 @@ let logout = async (ctx, next) => {
 module.exports = {
     create,
     get,
-    current,
+    update,
+    me,
+    list,
     login,
     logout
 };

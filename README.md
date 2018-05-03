@@ -1,6 +1,8 @@
-# 开发工具
-IDE: Visual Studio Code ,方便断点调试
+# 接口规范
+接口采用RESTful API规范，
 
+
+# 开发工具
 自动重启：nodemon，修改node代码后，自动重启node 服务
 
 ## mac 下 mongodb 安装
