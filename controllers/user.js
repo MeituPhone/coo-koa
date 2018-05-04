@@ -3,8 +3,7 @@ import { expireToken, getToken } from "../utils/tokenManager";
 
 // 注册:: post
 let create = async (ctx, next) => {
-    let username = ctx.request.body.username;
-    let password = ctx.request.body.password;
+    let { username, password } = ctx.request.body;
     try {
         let result = await userHandle.create({ username, password });
         ctx.body = result
@@ -15,24 +14,25 @@ let create = async (ctx, next) => {
 
 // 更新信息:: put
 let update = async (ctx, next) => {
-    console.log(ctx.request.path);
-    //TODO 写util
-    let pathArray = ctx.request.path.split('/');
-    let id = pathArray[pathArray.length-1];
     let { username, password } = ctx.request.body;
     try {
-        let result = await userHandle.update(id,{ username, password });
+        let result = await userHandle.update(ctx.params.id, { username, password });
         ctx.body = result
     } catch (err) {
-        ctx.throw(err.code, err.msg, err);
+        ctx.status = 404;
+        ctx.body = err;
     }
 };
 
 // 测试:: get
 let get = async (ctx, next) => {
-    let name = ctx.request.query.name;
-    let user = await userHandle.findByName(name);
-    ctx.body = user
+    try {
+        let user = await userHandle.findById(ctx.params.id);
+        ctx.body = user
+    } catch (err) {
+        ctx.status = err.code;
+        ctx.body = err.msg;
+    }
 };
 
 
@@ -54,9 +54,9 @@ let login = async (ctx, next) => {
     let { username, password } = ctx.request.body;
     let user = await userHandle.login(username, password).then((user) => {
         ctx.body = user;
-    }).catch((error) => {
-        ctx.throw(500, error.message, { msg: error.message });
-        // error
+    }).catch((err) => {
+        ctx.status = 400;
+        ctx.body = err;
     })
 }
 

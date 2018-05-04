@@ -1,6 +1,6 @@
 import Mongoose from 'mongoose';
 import User from '../models/user';
-import JWT from "jsonwebtoken";
+import Jwt from "jsonwebtoken";
 import { TOKE_SECRET_KEY } from '../../consts';
 import MSG from '../../consts/msg';
 
@@ -38,7 +38,7 @@ module.exports = {
         if (user) {
             return await _user.update({ status: 0 })
         } else {
-            throw({code:404,msg:'user no found'})
+            throw ({ code: 404, msg: 'user no found' })
         }
     },
     able: async (id) => {
@@ -50,7 +50,6 @@ module.exports = {
     },
     // 单条
     findByName: async (name) => {
-        console.log(name, '234');
         return User.findByName(name);
     },
     findById: async (id) => {
@@ -58,7 +57,6 @@ module.exports = {
     },
     login: async (username, password) => {
         let user = await User.findByName(username);
-
         if (user) {
             let flag = await user.comparePassword(password);
             if (flag) {
@@ -69,7 +67,7 @@ module.exports = {
                 );
                 return { token };
             } else {
-                throw ({ ...PASSWORD_ERROR });
+                throw (MSG.PASSWORD_ERROR );
             }
         } else {
             throw (MSG.PASSWORD_ERROR);

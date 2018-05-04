@@ -15,9 +15,9 @@ router.put('/:id', userControl.update);
 
 router.delete('/:id',userControl.remove);
 
-router.post('/auth/login',userControl.login);
+router.post('/session',userControl.login);
 
-router.get('/auth/logout',userControl.logout);
+router.delete('/session/:token',userControl.logout);
 
 
 export default router;

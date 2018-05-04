@@ -28,7 +28,11 @@ let UserSchema = new Mongoose.Schema({
     });
 
 // 新增之前的中间件
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function (next) {
+    if (this.isModified('password') || this.isNew) {
+        this.password = await encrypt(this.password);
+    }
+    
     if (this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now();
     } else {
