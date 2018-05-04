@@ -26,7 +26,7 @@ let create = async (ctx, next) => {
 let update = async (ctx, next) => {
     let {username, password} = ctx.request.body;
     let result = userHandle.update({username, password});
-    cxt.body = JSON.stringify({
+    ctx.body = JSON.stringify({
         result
     });
 };
