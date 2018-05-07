@@ -1,9 +1,22 @@
 import userHandle from '../dao/handle/user';
 import { expireToken, getToken } from "../utils/tokenManager";
+import Joi from "joi";
 
 // 注册:: post
 let create = async (ctx, next) => {
     let { username, password } = ctx.request.body;
+    //参数验证
+    const schema = Joi.object().keys({
+        username:Joi.string().min(3).max(30).required(),
+        password:Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
+    })
+    let error =  Joi.validate({username,password},schema).error
+    if(error){
+        ctx.status = 400;
+        ctx.body = {msg:error.message}
+        return;
+    }
+    
     try {
         let result = await userHandle.create({ username, password });
         ctx.body = result

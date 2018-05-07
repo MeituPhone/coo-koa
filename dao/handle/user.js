@@ -15,7 +15,6 @@ module.exports = {
             platform,
             status: 1,
         });
-
         let user = await User.findByName(username);
         if (user) {
             throw ({ code: 400, msg: '用户已存在' })
@@ -36,7 +35,7 @@ module.exports = {
     disable: async (id) => {
         let user = await User.findById(id);
         if (user) {
-            return await _user.update({ status: 0 })
+            return await _user.update({ status: 0 });
         } else {
             throw ({ code: 404, msg: 'user no found' })
         }

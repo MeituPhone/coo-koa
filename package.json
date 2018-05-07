@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "web base on koa",
   "scripts": {
-    "start": "nodemon ./index.js"
+    "start": "nodemon ./index.js",
+    "start-debug":"nodemon --inspect index.js"
   },
   "main": "app.js",
   "dependencies": {
@@ -11,6 +12,7 @@
     "axios": "^0.18.0",
     "bcrypt": "^2.0.1",
     "bluebird": "^3.5.1",
+    "joi": "^13.2.0",
     "jsonwebtoken": "^8.2.1",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
