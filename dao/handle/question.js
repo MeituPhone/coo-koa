@@ -17,7 +17,7 @@ export default {
         try {
             return await question.save();
         } catch (error) {
-            throw error
+            throw error;
         }
     },
 
@@ -26,12 +26,12 @@ export default {
         if (_user) {
             return await Question.findById(id);
         } else {
-            throw ({ status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR })
+            throw ({ status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR });
         }
     },
 
     fetch: async (query = {}, skip = 1, limit = 10) => {
-        return await Question.fetch(query, skip, limit)
+        return await Question.fetch(query, skip, limit);
     },
 
     disable: async (id) => {
