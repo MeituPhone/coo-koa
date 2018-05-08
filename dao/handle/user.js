@@ -2,7 +2,8 @@ import Mongoose from 'mongoose';
 import User from '../models/user';
 import Jwt from "jsonwebtoken";
 import { TOKE_SECRET_KEY } from '../../consts';
-import MSG from '../../consts/msg';
+import Msg from '../../consts/msg';
+import autoincrement from '../utils/autoincrement'
 
 module.exports = {
     // 增加数据
@@ -17,9 +18,15 @@ module.exports = {
         });
         let user = await User.findByName(username);
         if (user) {
-            throw ({ code: 400, msg: '用户已存在' })
+            throw ({ status: 400, error: Msg.USER_EXIST_ERROR })
         }
-        return await _user.save();
+
+        try {
+            return await _user.save();
+        } catch (error) {
+            //TODO log
+            throw { status: 500, error: Msg.CREATE_ERROR };
+        }
     },
     // 修改数据
     update: async (id, user) => {
@@ -28,24 +35,24 @@ module.exports = {
             // TODO 验证修改的字段
             return await _user.update(user);
         } else {
-            throw ({ code: 404, msg: 'user no found' });
+            throw ({ status: 404, error: Msg.USER_NOT_EXIST_ERROR });
         }
     },
     // 禁用
     disable: async (id) => {
         let user = await User.findById(id);
         if (user) {
-            return await _user.update({ status: 0 });
+            return await user.update({ status: 0 });
         } else {
-            throw ({ code: 404, msg: 'user no found' })
+            throw ({ status: 404, error: Msg.USER_NOT_EXIST_ERROR })
         }
     },
     able: async (id) => {
 
     },
     // 获取
-    fetch: async (query = {}, page = 0, size = 10) => {
-        return await User.fetch(query, page, size)
+    fetch: async (query = {}, skip = 1, limit = 10) => {
+        return await User.fetch(query, skip, limit)
     },
     // 单条
     findByName: async (name) => {
@@ -66,10 +73,10 @@ module.exports = {
                 );
                 return { token };
             } else {
-                throw (MSG.PASSWORD_ERROR );
+                throw ({ status: 400, error: Msg.PASSWORD_ERROR });
             }
         } else {
-            throw (MSG.PASSWORD_ERROR);
+            throw ({ status: 400, error: Msg.USER_NOT_EXIST_ERROR });
         }
     },
 };

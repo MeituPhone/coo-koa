@@ -33,7 +33,6 @@ export const verifyToken = async (ctx, next) => {
         if (reply) {
             return ctx.response.status = 401;
         }
-
         return next();
     });
 };

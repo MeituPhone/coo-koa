@@ -1,80 +1,121 @@
 import userHandle from '../dao/handle/user';
 import { expireToken, getToken } from "../utils/tokenManager";
 import Joi from "joi";
+import Msg from "../consts/msg";
+import Validation from "../consts/validation"
 
-// 注册:: post
+/**
+ * @description 用户注册
+ */
 let create = async (ctx, next) => {
     let { username, password } = ctx.request.body;
     //参数验证
     const schema = Joi.object().keys({
-        username:Joi.string().min(3).max(30).required(),
-        password:Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
+        username: Joi.string().regex(Validation.USRNAME_REG).required(),
+        password: Joi.string().regex(Validation.PASSWORD_REG).required()
     })
-    let error =  Joi.validate({username,password},schema).error
-    if(error){
+
+    let error = Joi.validate({ username, password }, schema).error;
+
+    if (error) {
         ctx.status = 400;
-        ctx.body = {msg:error.message}
+        ctx.body = Msg.PARAMETER_ERROR;
+        ctx.body.msg = error.message;
         return;
     }
-    
+
     try {
         let result = await userHandle.create({ username, password });
-        ctx.body = result
+        ctx.body = {};
     } catch (err) {
-        ctx.throw(err.code, err.msg, err);
+        ctx.status = err.status || 400;
+        ctx.body = err.error || err;
     }
 };
 
-// 更新信息:: put
+/**
+ * @description 更新用户信息
+ */
 let update = async (ctx, next) => {
     let { username, password } = ctx.request.body;
     try {
         let result = await userHandle.update(ctx.params.id, { username, password });
         ctx.body = result
     } catch (err) {
-        ctx.status = 404;
-        ctx.body = err;
+        ctx.status = err.status || 400
+        ctx.body = err.error || err;
     }
 };
 
-// 测试:: get
+
+/**
+ * @description 根据id获取用户
+ */
 let get = async (ctx, next) => {
     try {
         let user = await userHandle.findById(ctx.params.id);
         ctx.body = user
     } catch (err) {
-        ctx.status = err.code;
-        ctx.body = err.msg;
+        ctx.status = err.status || 400
+        ctx.body = err.error || err;
     }
 };
 
-
+/**
+ * @description 获取用户列表
+ */
 let getList = async (ctx, next) => {
-    let { page, pagesize } = ctx.request.query;
-    let users = await userHandle.fetch(page, pagesize);
-    ctx.response.body = users;
+    let { page = 1, per_page = 10 } = ctx.request.query;
+
+    page = parseInt(page);
+    per_page = parseInt(per_page);
+
+    let skip = (page - 1) * per_page;
+
+    try {
+        let users = await userHandle.fetch({}, skip, per_page);
+        ctx.response.body = users;
+    } catch (err) {
+        ctx.status = err.status || 400
+        ctx.body = err.error || err;
+    }
 }
 
-let remove = async (ctx, next) => {
+/**
+ * @description 禁用用户
+ */
+let disable = async (ctx, next) => {
     let token = getToken(ctx.request.headers);
     let uid = ctx.request.body.uid;
     //TODO if is admin
-    let user = await userHandle.disable(uid);
-    ctx.body = user;
+    try {
+        let result = await userHandle.disable(uid);
+        ctx.body = user;
+    } catch (err) {
+        ctx.status = err.status || 400
+        ctx.body = err.error || err;
+    }
 }
 
+/**
+ * @description 登陆
+ */
 let login = async (ctx, next) => {
     let { username, password } = ctx.request.body;
     let user = await userHandle.login(username, password).then((user) => {
         ctx.body = user;
     }).catch((err) => {
-        ctx.status = 400;
-        ctx.body = err;
+        ctx.status = err.status || 400
+        ctx.body = err.error || err;
     })
 }
 
+/**
+ * @description 登出
+ */
 let logout = async (ctx, next) => {
-
+    expireToken(ctx);
+    ctx.body = {};
 }
 
 module.exports = {
@@ -84,5 +125,5 @@ module.exports = {
     login,
     logout,
     update,
-    remove
+    disable
 };

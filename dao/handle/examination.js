@@ -1,0 +1,1 @@
+import Examination from '../models/examination'

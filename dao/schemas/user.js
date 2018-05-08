@@ -1,11 +1,11 @@
-import Mongoose from 'mongoose';
-import { validate, encrypt } from '../../utils/encryption';
+import { Schema } from 'mongoose';
+import { encrypt,validate } from '../../utils/encryption';
 
 // 定义模式
-let UserSchema = new Mongoose.Schema({
+let UserSchema = new Schema({
     uid: String,
     username: {
-        type:String,
+        type: String,
         unique: true,
         require: true,
     },
@@ -21,7 +21,7 @@ let UserSchema = new Mongoose.Schema({
         updateAt: {
             type: Date,
             default: Date.now()
-        }
+        },
     }
 }, {
         versionKey: false
@@ -32,13 +32,6 @@ UserSchema.pre('save', async function (next) {
     if (this.isModified('password') || this.isNew) {
         this.password = await encrypt(this.password);
     }
-    
-    if (this.isNew) {
-        this.meta.createAt = this.meta.updateAt = Date.now();
-    } else {
-        this.meta.updateAt = Date.now();
-    }
-
     next();
 });
 
