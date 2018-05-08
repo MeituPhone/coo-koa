@@ -1,6 +1,7 @@
-import Question from '../models/question'
+import Question from '../models/question';
+import Msg from '../../consts/msg';
 
-const exports = {
+export default {
 
     create: async ({ title, score, sortnum, photo, answer, choices }) => {
         let question = new Question({
@@ -20,16 +21,31 @@ const exports = {
         }
     },
 
-    update: async ({ id, title, score, sort }) => {
-
+    update: async ({ id, _question }) => {
+        let question = await Question.findById(id);
+        if (_user) {
+            return await Question.findById(id);
+        } else {
+            throw ({ status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR })
+        }
     },
 
-    fetch: async () => {
-
+    fetch: async (query = {}, skip = 1, limit = 10) => {
+        return await Question.fetch(query, skip, limit)
     },
 
-    disable: async () => {
+    disable: async (id) => {
+        let question = await Question.findById(id);
 
+        if (!question) {
+            throw ({ status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR });
+        }
+
+        try {
+            return await question.update({ status: 0 });
+        } catch (error) {
+            throw ({ status: 400, error: Msg.UPDATE_ERROR });
+        }
     },
 
     find: async (id) => {
@@ -41,5 +57,3 @@ const exports = {
     },
 
 }
-
-export default exports;

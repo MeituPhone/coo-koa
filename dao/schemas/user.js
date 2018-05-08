@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { encrypt,validate } from '../../utils/encryption';
+import { encrypt, validate } from '../../utils/encryption';
 
 // 定义模式
 let UserSchema = new Schema({
@@ -13,16 +13,6 @@ let UserSchema = new Schema({
     userinfo: Object,
     platform: String,
     status: Number,
-    meta: {
-        createAt: {
-            type: Date,
-            default: Date.now()
-        },
-        updateAt: {
-            type: Date,
-            default: Date.now()
-        },
-    }
 }, {
         versionKey: false
     });
@@ -46,12 +36,12 @@ UserSchema.statics = {
     fetch: function (query, skip, limit) {
         return this.find({ ...query }, { password: 0 }).skip(skip).limit(limit).sort('meta.updateAt').exec();
     },
-    findByName: function (name) {
-        return this.findOne({ username: name }).exec();
-    },
-    findById: function (id) {
-        return this.findOne({ uid: id }).exec();
-    }
+    // findByName: function (name) {
+    //     return this.findOne({ username: name }).exec();
+    // },
+    // findById: function (id) {
+    //     return this.findOne({ uid: id }).exec();
+    // }
 };
 
 module.exports = UserSchema;

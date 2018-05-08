@@ -48,8 +48,16 @@ const NAME_ERROR = {
 };
 
 const PARAMETER_ERROR = {
-    code: 10000,
+    code: 8000,
     msg: 'Incorrect parameter'
+}
+
+//题库
+
+//题目已存在
+const QUESTION_NOT_EXIST_ERROR = {
+    code:9000,
+    msg:'question alreay exists'
 }
 
 export default {
@@ -60,12 +68,14 @@ export default {
 
     USER_EXIST_ERROR,
     USER_NOT_EXIST_ERROR,
-    
+
     PASSWORD_ERROR,
     NAME_ERROR,
     
     /**
      * @description 参数错误
      */
-    PARAMETER_ERROR
+    PARAMETER_ERROR,
+
+    QUESTION_NOT_EXIST_ERROR,
 };

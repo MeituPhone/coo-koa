@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import passport from 'passport'
-import '../utils/passport'
+import '../utils/passport';
 import userControl from '../controllers/user';
 import { verifyToken } from '../utils/tokenManager';
 

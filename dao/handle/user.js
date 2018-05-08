@@ -32,7 +32,6 @@ module.exports = {
     update: async (id, user) => {
         let _user = await User.findById(id);
         if (_user) {
-            // TODO 验证修改的字段
             return await _user.update(user);
         } else {
             throw ({ status: 404, error: Msg.USER_NOT_EXIST_ERROR });

@@ -13,17 +13,7 @@ let QuestionSchema = new Mongoose.Schema({
     choices: [{
         index: Number,
         content: String
-    }],
-    meta: {
-        createAt: {
-            type: Date,
-            defualt: Date.now()
-        },
-        updateAt: {
-            type: Date,
-            defualt: Date.now()
-        }
-    }
+    }]
 }, {
         versionKey: false
     })
@@ -48,7 +38,7 @@ QuestionSchema.statics = {
     fetch: function (query, skip, limit) {
         return this.find({ ...query }).skip(skip).limit(limit).sort('meta.updateAt').exec();
     },
-    
+
     findById: function (id) {
         return this.findOne({ id: id }).exec();
     }

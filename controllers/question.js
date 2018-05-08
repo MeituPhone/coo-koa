@@ -39,7 +39,7 @@ const create = async (ctx, next) => {
 }
 
 const update = async (ctx, next) => {
-
+    
 }
 
 const get = async (ctx, next) => {
@@ -54,5 +54,12 @@ const disable = async (ctx, next) => {
 
 }
 
+module.exports = {
+    create,
+    update,
+    get,
+    getList,
+    disable
+}
 
 
