@@ -22,16 +22,6 @@ let ArticleSchema = new Schema({
     authorName: String,
     content: String,
     remark: String,
-    meta: {
-        createAt: {
-            type: Date,
-            default: Date.now()
-        },
-        updateAt: {
-            type: Date,
-            default: Date.now()
-        }
-    }
 })
 
 ArticleSchema.pre('save', function (next) {

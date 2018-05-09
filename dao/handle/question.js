@@ -60,7 +60,7 @@ export default {
         }
     },
 
-    find: async (id) => {
+    findById: async (id) => {
         return await Question.findById(id);
     }
 

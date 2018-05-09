@@ -2,11 +2,11 @@
  * 管理员控制器
  * Created by 王佳欣 on 2018/4/28.
  */
+import JWT from 'jsonwebtoken';
+import { TOKE_SECRET_KEY } from '../consts';
 import MSG from '../consts/msg';
-import administratorHandle from'../dao/handle/administrator';
-import {expireToken, getToken} from '../utils/tokenManager';
-import JWT from  'jsonwebtoken';
-import {TOKE_SECRET_KEY} from '../consts';
+import administratorHandle from '../dao/handle/administrator';
+import { expireToken, getToken } from '../utils/tokenManager';
 
 // 创建管理员
 let create = async (ctx, next) => {

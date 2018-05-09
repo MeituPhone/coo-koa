@@ -1,6 +1,6 @@
-import questionHandle from '../dao/handle/question';
 import Joi from "joi";
 import Msg from '../consts/msg';
+import questionHandle from '../dao/handle/question';
 
 const questionJoiSchema = Joi.object().keys({
     title: Joi.string().min(3).max(15).required(),
@@ -23,8 +23,9 @@ export default {
 
         if (validateError) {
             cxt.status = 400;
-            ctx.body = Msg.PARAMETER_ERROR;
-            ctx.body.msg = validateError.message;
+            let error = Msg.PARAMETER_ERROR;
+            error.msg = validateError.message;
+            cxt.body = {error};
             return;
         }
 
@@ -32,9 +33,10 @@ export default {
             let result = await questionHandle.create(data);
             ctx.status = 201;
             ctx.body = {};
-        } catch (err) {
-            ctx.status = err.status || 400;
-            ctx.body = err.error || err;
+        } catch (error) {
+            ctx.status = error.status || 400;
+            error = error.error || error;
+            ctx.body = { error };
         }
 
     },
@@ -54,19 +56,21 @@ export default {
         try {
             let result = await questionHandle.update(ctx.params.id, data);
             ctx.body = {};
-        } catch (err) {
-            ctx.status = err.status || 400;
-            ctx.body = err.error || err;
+        } catch (error) {
+            ctx.status = error.status || 400;
+            error = error.error || error;
+            ctx.body = { error }
         }
     },
 
     get: async (ctx, next) => {
         try {
-            let result = await questionHandle.find(ctx.params.id);
+            let result = await questionHandle.findById(ctx.params.id);
             ctx.body = result;
         } catch (error) {
-            ctx.status = err.status || 400;
-            ctx.body = err.error || err;
+            ctx.status = error.status || 400;
+            error = error.error || error;
+            ctx.body = { error };
         }
     },
 
@@ -78,8 +82,9 @@ export default {
             let result = await questionHandle.fetch({}, skip, per_page);
             ctx.body = result;
         } catch (error) {
-            ctx.status = err.status || 400;
-            ctx.body = err.error || err;
+            ctx.status = error.status || 400;
+            error = error.error || error
+            ctx.body = { error }
         }
     },
 
@@ -88,8 +93,9 @@ export default {
             let result = await questionHandle.disable(ctx.params.id);
             ctx.body = result;
         } catch (error) {
-            ctx.status = err.status || 400;
-            ctx.body = err.error || err;
+            ctx.status = error.status || 400;
+            error = error.error || error
+            ctx.body = { error }
         }
     }
 }

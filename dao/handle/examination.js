@@ -48,7 +48,7 @@ export default {
         }
     },
 
-    find: async (id) => {
+    findById: async (id) => {
         return await Examination.findById(id);
     }
 
