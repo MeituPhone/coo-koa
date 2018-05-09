@@ -18,7 +18,7 @@ module.exports = {
         });
         let user = await User.findByName(username);
         if (user) {
-            throw ({ status: 400, error: Msg.USER_EXIST_ERROR })
+            throw { status: 400, error: Msg.USER_EXIST_ERROR };
         }
 
         try {
@@ -34,7 +34,7 @@ module.exports = {
         if (_user) {
             return await _user.update(user);
         } else {
-            throw ({ status: 404, error: Msg.USER_NOT_EXIST_ERROR });
+            throw { status: 404, error: Msg.USER_NOT_EXIST_ERROR };
         }
     },
     // 禁用
@@ -43,7 +43,7 @@ module.exports = {
         if (user) {
             return await user.update({ status: 0 });
         } else {
-            throw ({ status: 404, error: Msg.USER_NOT_EXIST_ERROR })
+            throw { status: 404, error: Msg.USER_NOT_EXIST_ERROR };
         }
     },
     able: async (id) => {
@@ -55,10 +55,10 @@ module.exports = {
     },
     // 单条
     findByName: async (name) => {
-        return User.findByName(name);
+        return await User.findByName(name);
     },
     findById: async (id) => {
-        return User.findById(id);
+        return await User.findById(id);
     },
     login: async (username, password) => {
         let user = await User.findByName(username);
@@ -72,10 +72,10 @@ module.exports = {
                 );
                 return { token };
             } else {
-                throw ({ status: 400, error: Msg.PASSWORD_ERROR });
+                throw { status: 400, error: Msg.PASSWORD_ERROR };
             }
         } else {
-            throw ({ status: 400, error: Msg.USER_NOT_EXIST_ERROR });
+            throw { status: 400, error: Msg.USER_NOT_EXIST_ERROR };
         }
     },
 };

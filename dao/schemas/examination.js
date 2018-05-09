@@ -7,4 +7,10 @@ let ExaminationSchema = new Schema({
     questions: [question.id]
 })
 
+ExaminationSchema.static = {
+    fetch: function (query,skip,limit) {
+        return this.find(...query).skip(skip).limit(limit).sort('meta.updateAt').exec();
+    }
+}
+
 module.exports = ExaminationSchema;

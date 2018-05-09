@@ -22,9 +22,6 @@ let QuestionSchema = new Mongoose.Schema({
 QuestionSchema.pre('save', async function (next) {
     if (this.isNew) {
         this.id = await Autoincrement('question');
-        this.meta.createAt = this.meta.updateAt = Date.now();
-    } else {
-        this.updateAt = Date.now();
     }
 
     next();
@@ -44,4 +41,4 @@ QuestionSchema.statics = {
     }
 }
 
-module.exports = QuestionSchema;
+export default  QuestionSchema;

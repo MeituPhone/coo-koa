@@ -36,12 +36,12 @@ UserSchema.statics = {
     fetch: function (query, skip, limit) {
         return this.find({ ...query }, { password: 0 }).skip(skip).limit(limit).sort('meta.updateAt').exec();
     },
-    // findByName: function (name) {
-    //     return this.findOne({ username: name }).exec();
-    // },
+    findByName: function (name) {
+        return this.findOne({ username: name }).exec();
+    },
     // findById: function (id) {
     //     return this.findOne({ uid: id }).exec();
     // }
 };
 
-module.exports = UserSchema;
+export default UserSchema;
