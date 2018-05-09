@@ -53,7 +53,7 @@ export default {
     },
 
     fetch: async (query = {}, skip = 1, limit = 10) => {
-        return await Question.fetch(query, skip, limti);
+        return await Question.fetch(query, skip, limti)
     },
 
 }
