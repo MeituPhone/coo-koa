@@ -6,11 +6,11 @@ import passport from 'koa-passport';
 import { Strategy } from 'passport-http-bearer';
 import User from '../dao/models/user';
 import JWT from 'jsonwebtoken';
-import { TOKE_SECRET_KEY } from '../consts';
+import { TOKEN_SECRET_KEY } from '../consts';
 
 passport.use(new Strategy(
     function (token, done) {
-        JWT.verify(token, TOKE_SECRET_KEY, (error, decoded) => {
+        JWT.verify(token, TOKEN_SECRET_KEY, (error, decoded) => {
             if (error) {
                 return done(null, false, { msg: error.name });
             }

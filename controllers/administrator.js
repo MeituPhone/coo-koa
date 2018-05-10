@@ -6,7 +6,7 @@ import MSG from '../consts/msg';
 import administratorHandle from'../dao/handle/administrator';
 import {expireToken, getToken} from '../utils/tokenManager';
 import JWT from  'jsonwebtoken';
-import {TOKE_SECRET_KEY} from '../consts';
+import {TOKEN_SECRET_KEY} from '../consts';
 
 // 创建管理员
 let create = async (ctx, next) => {
@@ -26,7 +26,7 @@ let create = async (ctx, next) => {
 let update = async (ctx, next) => {
     let {include, value} = ctx.request.body;
     let token = getToken(ctx.request.headers);
-    let name = await JWT.verify(token, TOKE_SECRET_KEY).name;
+    let name = await JWT.verify(token, TOKEN_SECRET_KEY).name;
 
     await administratorHandle.update({include, value, name}).then((result) => {
         ctx.body = JSON.stringify(result);
@@ -61,7 +61,7 @@ let get = async (ctx, next) => {
 // 当前用户
 let me = async (ctx, next) => {
     let token = getToken(ctx.request.headers);
-    await JWT.verify(token, TOKE_SECRET_KEY, (error, decoded) => {
+    await JWT.verify(token, TOKEN_SECRET_KEY, (error, decoded) => {
         if (error) {
             return ctx.body = JSON.stringify({});
         }

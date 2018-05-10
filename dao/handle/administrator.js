@@ -1,6 +1,6 @@
 import Administrator from '../models/administrator';
 import JWT from  'jsonwebtoken';
-import {TOKE_SECRET_KEY} from '../../consts';
+import {TOKEN_SECRET_KEY} from '../../consts';
 import MSG from '../../consts/msg';
 
 export default {
@@ -50,7 +50,7 @@ export default {
                 // 生成 token
                 let token = JWT.sign(
                     { name: administrator.administrator }
-                    , TOKE_SECRET_KEY
+                    , TOKEN_SECRET_KEY
                     , { expiresIn: 60 * 60 }
                 );
 
