@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import bilibiliControl from '../controllers/bilibili';
+import bilibiliControl from '../controllers/meitu';
 
 let router = new Router({
     prefix: '/api/bilibili'

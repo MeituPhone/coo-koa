@@ -7,7 +7,12 @@ import routes from'./routes';
 import './config/mongo_database.js';
 import './config/redis_database.js';
 
+import logger from './middlewares/loggerManager';
+
 const app = new  Koa();
+
+// 日志收集
+app.use(logger());
 
 // 初始化 passport 验证模块
 app.use(passport.initialize());

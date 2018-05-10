@@ -15,7 +15,10 @@ router.get('/:id', passport.authenticate('bearer', { session: false }), verifyTo
 router.get('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.list);
 
 // 创建
-router.post('/', administratorControl.create);
+router.post('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.create);
+
+// 创建
+router.put('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.update);
 
 // 当前用户
 router.get('/auth/me', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.me);

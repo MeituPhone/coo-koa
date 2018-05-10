@@ -15,7 +15,7 @@ let AdministratorSchema = new Mongoose.Schema({
     },
     password: String,
     nickname: String,
-    avatar: Object,
+    avatar: String,
     status: Number,
     meta: {
         createAt: {
@@ -30,6 +30,8 @@ let AdministratorSchema = new Mongoose.Schema({
 }, {
     versionKey: false
 });
+
+
 
 // 新增之前的中间件
 AdministratorSchema.pre('save', async function(next) {
@@ -56,9 +58,9 @@ AdministratorSchema.methods = {
 // 静态查询方法
 AdministratorSchema.statics = {
     fetch: function (query ,skip, limit) {
-        return this.find({...query}, {password: 0}).skip(skip).limit(limit).sort('meta.updateAt');
+        return this.find({...query}, {password: 0}).skip(skip).limit(parseInt(limit)).sort('meta.updateAt');
     },
-    findByName: function(name, checkPwd = false) {
+    findByName: async function(name, checkPwd = false) {
         let options = {
             meta: 0
         };
@@ -66,11 +68,19 @@ AdministratorSchema.statics = {
         if (!checkPwd) {
             options.password = 0;
         }
-        return this.findOne({administrator: name}, options);
+        return await this.findOne({administrator: name}, options);
     },
     findById: function (id) {
         return this.findOne({_id: ObjectID(id)}, {password: 0, meta: 0});
+    },
+    updateInclude: async function ({include, name, value}) {
+        let data = {};
+        if (include === 'password') {
+            value = encrypt(value);
+        }
+        data[include] = value;
+        return this.update({administrator: name}, {$set: data});
     }
 };
 
-module.exports = AdministratorSchema;
+export default AdministratorSchema;

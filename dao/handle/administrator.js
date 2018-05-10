@@ -3,7 +3,7 @@ import JWT from  'jsonwebtoken';
 import {TOKE_SECRET_KEY} from '../../consts';
 import MSG from '../../consts/msg';
 
-module.exports = {
+export default {
     // 增加数据
     create: ({administrator, password, nickname, avatar}) => {
         let _administrator = new Administrator({
@@ -24,9 +24,9 @@ module.exports = {
             });
         });
     },
-    // 修改数据
-    update: (administrator) => {
-
+    // 修改
+    update: ({include, value, name}) => {
+        return Administrator.updateInclude({include, value, name});
     },
     // 禁用
     disable: function(id) {
@@ -37,32 +37,31 @@ module.exports = {
         return Administrator.fetch(query, skip, limit);
     },
     findByName: async function (name) {
-        return Administrator.findByName(name);
+        return await Administrator.findByName(name);
     },
     findById: async function (id) {
-        return Administrator.findById(id);
+        return await Administrator.findById(id);
     },
     login: async function (name, password) {
-        return new Promise((resolve, reject) => {
-            Administrator.findByName(name, true).then((administrator) => {
-                if (!administrator) {
-                    reject({code: 600001, msg: '用户名不存在'});
-                } else {
-                    administrator.comparePassword(password).then((flag) => {
-                        if (flag) {
-                            let token = JWT.sign(
-                                {name: administrator.administrator}
-                                , TOKE_SECRET_KEY
-                                , { expiresIn: 60 * 60 }
-                            );
+        let administrator = await Administrator.findByName(name, true);
 
-                            resolve({ token });
-                        } else {
-                            reject( {...PASSWORD_ERROR});
-                        }
-                    });
-                }
-            });
-        });
+        if (administrator) {
+            if (await administrator.comparePassword(password)) {
+                // 生成 token
+                let token = JWT.sign(
+                    { name: administrator.administrator }
+                    , TOKE_SECRET_KEY
+                    , { expiresIn: 60 * 60 }
+                );
+
+                return {token};
+            }
+
+            // 密码错误
+            return {...MSG.PASSWORD_ERROR};
+        }
+
+        // 用户名错误
+        return {...MSG.NAME_ERROR};
     }
 };

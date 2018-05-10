@@ -1,11 +1,11 @@
 import Router from 'koa-router';
-import biliblili from './bilibili';
+import meitu from './meitu';
 import user from './user';
 import administrator from './administrator';
 
 let router = Router();
 
-router.use(biliblili.routes(), biliblili.allowedMethods());
+router.use(meitu.routes(), meitu.allowedMethods());
 router.use(user.routes(), user.allowedMethods());
 router.use(administrator.routes(), administrator.allowedMethods());
 

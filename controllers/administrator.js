@@ -24,10 +24,18 @@ let create = async (ctx, next) => {
 
 // 更新信息
 let update = async (ctx, next) => {
-    let {username, password} = ctx.request.body;
-    let result = userHandle.update({username, password});
-    cxt.body = JSON.stringify({
-        result
+    let {include, value} = ctx.request.body;
+    let token = getToken(ctx.request.headers);
+    let name = await JWT.verify(token, TOKE_SECRET_KEY).name;
+
+    await administratorHandle.update({include, value, name}).then((result) => {
+        ctx.body = JSON.stringify(result);
+    }).catch((error) => {
+        ctx.body = JSON.stringify({
+            error: {
+                ...MSG.UPDATE_ERROR
+            }
+        });
     });
 };
 
@@ -55,7 +63,7 @@ let me = async (ctx, next) => {
     let token = getToken(ctx.request.headers);
     await JWT.verify(token, TOKE_SECRET_KEY, (error, decoded) => {
         if (error) {
-            ctx.body = JSON.stringify({});
+            return ctx.body = JSON.stringify({});
         }
         return administratorHandle.findByName(decoded.name).then((result) => {
             if (!result) {
