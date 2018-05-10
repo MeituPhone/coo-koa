@@ -1,5 +1,5 @@
-import Question from '../models/question';
 import Msg from '../../consts/msg';
+import Question from '../models/question';
 
 export default {
 
@@ -21,15 +21,15 @@ export default {
         }
     },
 
-    update: async (id, { score, sortnum, photo, answer, choices }) => {
-        let _question = new Question({
+    update: async (id, { title, score, sortnum, photo, answer, choices }) => {
+        let _question = {
             title,
             score,
             sortnum,
             photo,
             answer,
             choices,
-        });
+        };
         let question = await Question.findById(id);
         if (!question) {
             throw { status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR };
@@ -43,7 +43,7 @@ export default {
     },
 
     fetch: async (query = {}, skip = 1, limit = 10) => {
-        return await Question.fetch(query, skijp, limit);
+        return await Question.fetch(query, skip, limit);
     },
 
     disable: async (id) => {

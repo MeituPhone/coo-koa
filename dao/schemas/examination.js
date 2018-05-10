@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import question from './question'
+import Question from '../models/question';
 
 let ExaminationSchema = new Schema({
     id: Number,
@@ -8,9 +8,12 @@ let ExaminationSchema = new Schema({
 })
 
 ExaminationSchema.static = {
-    fetch: function (query,skip,limit) {
-        return this.find(...query).skip(skip).limit(limit).sort('meta.updateAt').exec();
+    findById: function (id) {
+        return this.findOne({id:id}).populate({path:'id',moduleQuestion}).exec()
+    },
+    fetch: function (query, skip, limit) {
+        return this.find(...query).populate({path:'id',moduleQuestion}).skip(skip).limit(limit).sort('meta.updateAt').exec();
     }
 }
 
-module.exports = ExaminationSchema;
+export default ExaminationSchema;

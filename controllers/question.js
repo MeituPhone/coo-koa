@@ -8,6 +8,7 @@ const questionJoiSchema = Joi.object().keys({
     sortnum: Joi.number(),
     photo: Joi.string(),
     answer: Joi.number(),
+    type: Joi.number(),
     choices: Joi.array().items(Joi.object({
         index: Joi.number().required(),
         content: Joi.string().required(),
@@ -17,86 +18,55 @@ const questionJoiSchema = Joi.object().keys({
 export default {
 
     create: async (ctx, next) => {
-        let data = ctx.body;
+        let data = ctx.request.body;
+        data.choices = JSON.parse(data.choices);
 
         let validateError = Joi.validate(data, questionJoiSchema).error;
 
         if (validateError) {
-            cxt.status = 400;
             let error = Msg.PARAMETER_ERROR;
             error.msg = validateError.message;
-            cxt.body = {error};
-            return;
+            throw ({ status: 400, error: error });
         }
 
-        try {
-            let result = await questionHandle.create(data);
-            ctx.status = 201;
-            ctx.body = {};
-        } catch (error) {
-            ctx.status = error.status || 400;
-            error = error.error || error;
-            ctx.body = { error };
-        }
+        let result = await questionHandle.create(data);
+        ctx.status = 201;
+        ctx.body = { id: result.id };
 
     },
 
     update: async (ctx, next) => {
-        let data = ctx.body;
+        let data = ctx.request.body;
+        data.choices = JSON.parse(data.choices);
 
         let validateError = Joi.validate(data, questionJoiSchema).error;
 
         if (validateError) {
-            cxt.status = 400;
-            ctx.body = Msg.PARAMETER_ERROR;
-            ctx.body.msg = validateError.message;
-            return;
+            let error = Msg.PARAMETER_ERROR;
+            error.msg = validateError.message;
+            throw ({ status: 400, error: error });
         }
 
-        try {
-            let result = await questionHandle.update(ctx.params.id, data);
-            ctx.body = {};
-        } catch (error) {
-            ctx.status = error.status || 400;
-            error = error.error || error;
-            ctx.body = { error }
-        }
+        let result = await questionHandle.update(ctx.params.id, data);
+        ctx.body = {};
     },
 
     get: async (ctx, next) => {
-        try {
-            let result = await questionHandle.findById(ctx.params.id);
-            ctx.body = result;
-        } catch (error) {
-            ctx.status = error.status || 400;
-            error = error.error || error;
-            ctx.body = { error };
-        }
+        let result = await questionHandle.findById(ctx.params.id);
+        ctx.body = result;
     },
 
     list: async (ctx, next) => {
         let { page = 1, per_page = 10 } = ctx.request.query;
         let skip = (page - 1) * per_page;
 
-        try {
-            let result = await questionHandle.fetch({}, skip, per_page);
-            ctx.body = result;
-        } catch (error) {
-            ctx.status = error.status || 400;
-            error = error.error || error
-            ctx.body = { error }
-        }
+        let result = await questionHandle.fetch({}, skip, per_page);
+        ctx.body = result;
     },
 
     disable: async (ctx, next) => {
-        try {
-            let result = await questionHandle.disable(ctx.params.id);
-            ctx.body = result;
-        } catch (error) {
-            ctx.status = error.status || 400;
-            error = error.error || error
-            ctx.body = { error }
-        }
+        let result = await questionHandle.disable(ctx.params.id);
+        ctx.body = result;
     }
 }
 
