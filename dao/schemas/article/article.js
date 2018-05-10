@@ -25,8 +25,8 @@ let ArticleSchema = new Schema({
 })
 
 ArticleSchema.pre('save', function (next) {
-    if(this.isNew){
-        this.id = await Autoincrement('article');
+    if (this.isNew) {
+        this.id = Autoincrement('article');
     }
 
     next();

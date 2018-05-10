@@ -74,7 +74,7 @@ export default {
         }
     },
 
-    getList: async (ctx, next) => {
+    list: async (ctx, next) => {
         let { page = 1, per_page = 10 } = ctx.request.query;
         let skip = (page - 1) * per_page;
 

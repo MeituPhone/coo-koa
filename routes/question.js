@@ -8,7 +8,7 @@ let router = new Router({
     prefix:'/api/question'
 });
 
-router.get('/',questionControl.getList);
+router.get('/',questionControl.list);
 
 router.post('/',questionControl.create);
 

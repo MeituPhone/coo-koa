@@ -1,6 +1,6 @@
-import { model } from "mongoose";
+import  Mongoose from "mongoose";
 import ExmainationSchema from '../schemas/examination'
 
-let Examination = model('Examination', ExmainationSchema);
+let Examination = Mongoose.model('Examination', ExmainationSchema);
 
 export default Examination;

@@ -1,6 +1,6 @@
-import { model } from "mongoose";
-import ArticleTypeSchema from '../../schemas/article/articleType'
+import Mongoose from "mongoose";
+import ArticleTypeSchema from '../../schemas/article/articleType';
 
-let ArticleType = model('Article',ArticleTypeSchema);
+let ArticleType = Mongoose.model('ArticleType', ArticleTypeSchema);
 
 export default ArticleType

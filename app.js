@@ -6,6 +6,7 @@ import passport from 'koa-passport';
 import routes from'./routes';
 import './config/mongo_database.js';
 import './config/redis_database.js';
+import errorHandle from './middlewares/errorHandle'
 
 const app = new  Koa();
 
@@ -17,6 +18,9 @@ app.use(Convert(Cors()));
 
 // 引用bodyparser 中间件
 app.use(BodyParser());
+
+//错误处理
+app.use(errorHandle());
 
 app.use(routes.routes(), routes.allowedMethods());
 

@@ -1,11 +1,11 @@
 
 
-export class Controller {
+class Controller {
 
     constructor(handle) {
-
+        this.handle = handle;
     }
-
+    
     async create(ctx, next) {
 
     }
@@ -26,3 +26,5 @@ export class Controller {
 
     }
 }
+
+module.exports = Controller;

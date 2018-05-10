@@ -18,7 +18,6 @@ export default {
 
     create: async (ctx, next) => {
         let data = ctx.body;
-
         let validateError = Joi.validate(data, articleJoiSchema).error;
 
         if (validateError) {
