@@ -4,4 +4,8 @@
  */
 
 import Mongoose from 'mongoose';
+import lastModifiedPlugin from '../dao/utils/lastMod';
+
 Mongoose.connect('mongodb://127.0.0.1:12345/imooc');
+
+Mongoose.plugin(lastModifiedPlugin);
