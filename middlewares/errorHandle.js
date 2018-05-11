@@ -1,5 +1,5 @@
 function errorHandle() {
-    return async function onerror(ctx, next) {
+    return async (ctx, next) => {
         try {
             await next();
         } catch (err) {
