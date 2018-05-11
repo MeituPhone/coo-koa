@@ -1,18 +1,37 @@
 import { Schema } from "mongoose";
 import Question from '../models/question';
+import Autoincrement from '../utils/autoincrement';
 
 let ExaminationSchema = new Schema({
-    id: Number,
+    id: {
+        type: Number,
+        unique: true
+    },
     title: String,
-    questions: [Number]
+    questions: [Number],
+    status: Number
+}, {
+        versionKey: false
+    });
+
+ExaminationSchema.pre('save', async function (next) {
+    if (this.isNew) {
+        this.id = await Autoincrement('examination');
+    }
+
+    next();
 })
 
-ExaminationSchema.static = {
+ExaminationSchema.statics = {
     findById: function (id) {
-        return this.findOne({id:id}).populate({path:'id',moduleQuestion}).exec()
+        return this.findOne({ id: id })
+            // .populate({ path: 'id', Question })
+            .exec()
     },
     fetch: function (query, skip, limit) {
-        return this.find(...query).populate({path:'id',moduleQuestion}).skip(skip).limit(limit).sort('meta.updateAt').exec();
+        return this.find(...query)
+            // .populate({ path: 'id', Question })
+            .skip(skip).limit(limit).sort('meta.updateAt').exec();
     }
 }
 

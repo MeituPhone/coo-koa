@@ -5,10 +5,13 @@ let ArticleTypeSchema = new Schema({
         type: String,
         unique: true,
         required: true
-    }
+    },
+    status:Number
+},{
+    versionKey:false
 })
 
-ArticleTypeSchema.static = {
+ArticleTypeSchema.statics = {
     fetch: function (query, skip, limit) {
         return this.find({ ...query }).skip(skip).limit(limit).sort('meta.createAt').exec();
     },

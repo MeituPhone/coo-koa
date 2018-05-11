@@ -5,24 +5,25 @@ export default {
 
     create: async ({ tag }) => {
         let articleTag = new ArticleTag({
-            tag
+            tag,
+            status: 1
         });
 
-        let _articleTag = ArticleTag.findByName(tag);
+        let _articleTag = await ArticleTag.findByName(tag);
 
         if (_articleTag) {
             throw { status: 400, error: Msg.ARTICLE_TAG_EXIST_ERROR };
         }
 
         try {
-            return articleTag.save();
+            return await articleTag.save();
         } catch (error) {
             throw { status: 400, error: Msg.CREATE_ERROR };
         }
     },
 
     update: async (id, _articleTag) => {
-        let articleTag = ArticleTag.findById(id);
+        let articleTag = await ArticleTag.findById(id);
         if (!articleTag) {
             throw { status: 404, error: Msg.ARTICLE_TAG_NOT_EXIST_ERROR };
         }
@@ -35,21 +36,21 @@ export default {
     },
 
     fetch: async (query = {}, skip = 1, limit = 10) => {
-        return ArticleTag.fetch(query, skip, limit);
+        return await ArticleTag.fetch(query, skip, limit);
     },
 
     findById: async (id) => {
-        return ArticleTag.findById(id);
+        return await ArticleTag.findById(id);
     },
 
     disable: async (id) => {
-        let articleTag = ArticleTag.findById(id);
+        let articleTag = await ArticleTag.findById(id);
         if (!articleTag) {
             throw { status: 404, error: Msg.ARTICLE_TAG_NOT_EXIST_ERROR };
         }
 
         try {
-            return articleTag.update({ status: 0 });
+            return await articleTag.update({ status: 0 });
         } catch (error) {
             throw { status: 400, error: Msg.UPDATE_ERROR };
         }

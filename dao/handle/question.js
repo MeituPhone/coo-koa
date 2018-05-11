@@ -16,8 +16,9 @@ export default {
 
         try {
             return await question.save();
+
         } catch (error) {
-            throw { status, error: Msg.CREATE_ERROR };
+            throw { status: 400, error: Msg.CREATE_ERROR };
         }
     },
 

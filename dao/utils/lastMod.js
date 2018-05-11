@@ -18,9 +18,15 @@ module.exports = (schema, options) => {
         if (this.isNew) {
             this.meta.createAt = this.meta.updateAt = Date.now()
         } else {
-            this.updateAt = Date.now();
+            // this.updateAt = Date.now();
         }
 
+        next();
+    });
+
+    schema.pre('update', function (next) {
+        this.updateAt = Date.now();
+        
         next();
     })
 }

@@ -19,8 +19,6 @@ export default {
 
     create: async (ctx, next) => {
         let data = ctx.request.body;
-        data.choices = JSON.parse(data.choices);
-
         let validateError = Joi.validate(data, questionJoiSchema).error;
 
         if (validateError) {
@@ -29,6 +27,7 @@ export default {
             throw ({ status: 400, error: error });
         }
 
+        data.choices = JSON.parse(data.choices);
         let result = await questionHandle.create(data);
         ctx.status = 201;
         ctx.body = { id: result.id };
@@ -37,16 +36,15 @@ export default {
 
     update: async (ctx, next) => {
         let data = ctx.request.body;
-        data.choices = JSON.parse(data.choices);
-
         let validateError = Joi.validate(data, questionJoiSchema).error;
-
+        
         if (validateError) {
             let error = Msg.PARAMETER_ERROR;
             error.msg = validateError.message;
             throw ({ status: 400, error: error });
         }
-
+        
+        data.choices = JSON.parse(data.choices);
         let result = await questionHandle.update(ctx.params.id, data);
         ctx.body = {};
     },

@@ -13,7 +13,8 @@ export default {
             type,
             authorName,
             content,
-            remark
+            remark,
+            status: 1
         })
 
         try {
@@ -23,22 +24,33 @@ export default {
         }
     },
 
-    update: async (id,_article) => {
-        let article = Article.findById(id);
+    update: async (id, { title, description, summary, keyword, tags, type, authorName, content, remark }) => {
+        let article = await Article.findById(id);
+        let _article = {
+            title,
+            description,
+            summary,
+            keyword,
+            tags,
+            type,
+            authorName,
+            content,
+            remark
+        }
 
-        if(!article){
-            throw {stutas:404,error:Msg.ARTICLE_NOT_EXIST_ERROR};
+        if (!article) {
+            throw { stutas: 404, error: Msg.ARTICLE_NOT_EXIST_ERROR };
         }
 
         try {
             return await article.update(_article);
         } catch (error) {
-            throw {stutas:400,error:Msg.UPDATE_ERROR};
+            throw { stutas: 400, error: Msg.UPDATE_ERROR };
         }
     },
 
     fetch: async (query = {}, skip = 1, limit = 10) => {
-        return await Article.fetch(quey,skip,limit);
+        return await Article.fetch(query, skip, limit);
     },
 
     findById: async (id) => {
@@ -46,16 +58,16 @@ export default {
     },
 
     disable: async (id) => {
-        let article = Article.findById(id);
+        let article = await Article.findById(id);
 
-        if(!article){
-            throw {status:404,error:Msg.ARTICLE_NOT_EXIST_ERROR};
+        if (!article) {
+            throw { status: 404, error: Msg.ARTICLE_NOT_EXIST_ERROR };
         }
 
         try {
-            return await article.update({status:400,error:Msg.UPDATE_ERROR});
+            return await article.update({ status: 400, error: Msg.UPDATE_ERROR });
         } catch (error) {
-            throw {stutas:400,error:Msg.UPDATE_ERROR};
+            throw { stutas: 400, error: Msg.UPDATE_ERROR };
         }
     }
 }
