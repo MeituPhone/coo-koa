@@ -1,8 +1,8 @@
-import userHandle from '../dao/handle/user';
-import { expireToken, getToken } from "../utils/tokenManager";
 import Joi from "joi";
 import Msg from "../consts/msg";
-import Validation from "../consts/validation"
+import Validation from "../consts/validation";
+import userHandle from '../dao/handle/user';
+import { expireToken, getToken } from "../utils/tokenManager";
 
 /**
  * @description 用户注册
@@ -15,22 +15,19 @@ let create = async (ctx, next) => {
         password: Joi.string().regex(Validation.PASSWORD_REG).required()
     })
 
-    let error = Joi.validate({ username, password }, schema).error;
+    let joiError = Joi.validate({ username, password }, schema).error;
 
-    if (error) {
+    if (joiError) {
         ctx.status = 400;
         ctx.body = Msg.PARAMETER_ERROR;
         ctx.body.msg = error.message;
-        return;
+        let err = { status: 400, error: Msg.PARAMETER_ERROR };
+        err.error.msg = joiError.message;
+        throw (err);
     }
 
-    try {
-        let result = await userHandle.create({ username, password });
-        ctx.body = {};
-    } catch (err) {
-        ctx.status = err.status || 400;
-        ctx.body = err.error || err;
-    }
+    let result = await userHandle.create({ username, password });
+    ctx.body = {};
 };
 
 /**
@@ -38,13 +35,8 @@ let create = async (ctx, next) => {
  */
 let update = async (ctx, next) => {
     let { username, password } = ctx.request.body;
-    try {
-        let result = await userHandle.update(ctx.params.id, { username, password });
-        ctx.body = result
-    } catch (err) {
-        ctx.status = err.status || 400
-        ctx.body = err.error || err;
-    }
+    let result = await userHandle.update(ctx.params.id, { username, password });
+    ctx.body = result
 };
 
 
@@ -52,13 +44,8 @@ let update = async (ctx, next) => {
  * @description 根据id获取用户
  */
 let get = async (ctx, next) => {
-    try {
-        let user = await userHandle.findById(ctx.params.id);
-        ctx.body = user
-    } catch (err) {
-        ctx.status = err.status || 400
-        ctx.body = err.error || err;
-    }
+    let user = await userHandle.findById(ctx.params.id);
+    ctx.body = user
 };
 
 /**
@@ -72,13 +59,8 @@ let getList = async (ctx, next) => {
 
     let skip = (page - 1) * per_page;
 
-    try {
-        let users = await userHandle.fetch({}, skip, per_page);
-        ctx.response.body = users;
-    } catch (err) {
-        ctx.status = err.status || 400
-        ctx.body = err.error || err;
-    }
+    let users = await userHandle.fetch({}, skip, per_page);
+    ctx.response.body = users;
 }
 
 /**
@@ -87,14 +69,10 @@ let getList = async (ctx, next) => {
 let disable = async (ctx, next) => {
     let token = getToken(ctx.request.headers);
     let uid = ctx.request.body.uid;
+
     //TODO if is admin
-    try {
-        let result = await userHandle.disable(uid);
-        ctx.body = user;
-    } catch (err) {
-        ctx.status = err.status || 400
-        ctx.body = err.error || err;
-    }
+    let result = await userHandle.disable(uid);
+    ctx.body = user;
 }
 
 /**
@@ -102,12 +80,8 @@ let disable = async (ctx, next) => {
  */
 let login = async (ctx, next) => {
     let { username, password } = ctx.request.body;
-    let user = await userHandle.login(username, password).then((user) => {
-        ctx.body = user;
-    }).catch((err) => {
-        ctx.status = err.status || 400
-        ctx.body = err.error || err;
-    })
+    let user = await userHandle.login(username, password)
+    ctx.body = user;
 }
 
 /**
@@ -118,7 +92,7 @@ let logout = async (ctx, next) => {
     ctx.body = {};
 }
 
-module.exports = {
+export default {
     create,
     get,
     getList,

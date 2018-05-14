@@ -9,23 +9,23 @@ let router = new Router({
 });
 
 // 用户
-router.get('/:id', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.get);
+router.get('/:id', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.get);
 
 // 列表
-router.get('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.list);
+router.get('/', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.list);
 
 // 创建
-router.post('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.create);
+router.post('/', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.create);
 
 // 用户
 router.del('/:id', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.remove);
 
 
 // 创建
-router.put('/', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.update);
+router.put('/', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.update);
 
 // 当前用户
-router.get('/auth/me', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.me);
+router.get('/auth/me', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.me);
 
 // 登录
 router.post('/auth/login', administratorControl.login);

@@ -5,7 +5,6 @@ let ArticleSchema = new Schema({
     id: {
         type: Number,
         unique: true,
-        required: true
     },
     title: String,
     description: String,
@@ -22,22 +21,37 @@ let ArticleSchema = new Schema({
     authorName: String,
     content: String,
     remark: String,
-})
+    status: Number
+}, {
+        versionKey: false
+    })
 
-ArticleSchema.pre('save', function (next) {
+
+ArticleSchema.pre('save', async function (next) {
     if (this.isNew) {
-        this.id = Autoincrement('article');
+        this.id = await Autoincrement('article');
     }
 
     next();
 })
 
-ArticleSchema.static = {
+ArticleSchema.statics = {
     fetch: function (query, skip, limit) {
-        return this.find({ ...query }).skip(skip).limit(limit).sort('meta.updateAt').exec();
+        return this
+            .find({ ...query })
+            .populate('tags')
+            .populate('type')
+            .skip(skip)
+            .limit(limit)
+            .sort('meta.updateAt')
+            .exec();
     },
     findById: function (id) {
-        return this.findOne({ id: id }).exec();
+        return this
+            .findOne({ id: id })
+            .populate('tags')
+            .populate('type')
+            .exec();
     }
 }
 

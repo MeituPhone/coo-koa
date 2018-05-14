@@ -1,12 +1,13 @@
-import Examination from '../models/examination';
-import Msg from '../../consts/msg';
+import Examination from '../../models/exam/examination';
+import Msg from '../../../consts/msg';
 
 export default {
 
     create: async ({ title, questions }) => {
         let examination = new Examination({
             title,
-            questions
+            questions,
+            status:1
         });
 
         try {
@@ -16,11 +17,12 @@ export default {
         }
     },
 
-    update: async ({ id, _examination }) => {
+    update: async (id, { title, questions }) => {
         let examination = await Examination.findById(id);
+        let _examination = { title, questions }
 
         if (!examination) {
-            throw { status: 404, error: Msg.EXAMINATION_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {
@@ -35,12 +37,12 @@ export default {
     },
 
     disable: async (id) => {
-        let examination = Examination.findById(id);
+        let examination =  await Examination.findById(id);
 
         if (!examination) {
-            throw { status: 404, error: Msg.EXAMINATION_NOT_EXIST_ERROR }
+            throw { status: 404, error: Msg.NO_FOUND_ERROR }
         }
-
+        
         try {
             return await examination.update({ status: 0 });
         } catch (error) {

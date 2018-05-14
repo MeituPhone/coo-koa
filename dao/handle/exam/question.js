@@ -1,5 +1,5 @@
-import Msg from '../../consts/msg';
-import Question from '../models/question';
+import Msg from '../../../consts/msg';
+import Question from '../../models/exam/question';
 
 export default {
 
@@ -16,8 +16,9 @@ export default {
 
         try {
             return await question.save();
+
         } catch (error) {
-            throw { status, error: Msg.CREATE_ERROR };
+            throw { status: 400, error: Msg.CREATE_ERROR };
         }
     },
 
@@ -32,7 +33,7 @@ export default {
         };
         let question = await Question.findById(id);
         if (!question) {
-            throw { status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {
@@ -50,7 +51,7 @@ export default {
         let question = await Question.findById(id);
 
         if (!question) {
-            throw { status: 404, error: Msg.QUESTION_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {

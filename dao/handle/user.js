@@ -1,7 +1,7 @@
 import Mongoose from 'mongoose';
 import User from '../models/user';
 import Jwt from "jsonwebtoken";
-import { TOKEN_SECRET_KEY } from '../../consts';
+import { USER_TOKEN_SECRE_KEY } from '../../consts';
 import Msg from '../../consts/msg';
 import autoincrement from '../utils/autoincrement'
 
@@ -18,7 +18,7 @@ module.exports = {
         });
         let user = await User.findByName(username);
         if (user) {
-            throw { status: 400, error: Msg.USER_EXIST_ERROR };
+            throw { status: 400, error: Msg.EXIST_ERROR };
         }
 
         try {
@@ -34,7 +34,7 @@ module.exports = {
         if (_user) {
             return await _user.update(user);
         } else {
-            throw { status: 404, error: Msg.USER_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
     },
     // 禁用
@@ -43,7 +43,7 @@ module.exports = {
         if (user) {
             return await user.update({ status: 0 });
         } else {
-            throw { status: 404, error: Msg.USER_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
     },
     able: async (id) => {
@@ -67,7 +67,7 @@ module.exports = {
             if (flag) {
                 let token = Jwt.sign(
                     { name: user.username },
-                    TOKEN_SECRET_KEY,
+                    USER_TOKEN_SECRE_KEY,
                     { expiresIn: 60 * 60 }
                 );
                 return { token };
@@ -75,7 +75,7 @@ module.exports = {
                 throw { status: 400, error: Msg.PASSWORD_ERROR };
             }
         } else {
-            throw { status: 400, error: Msg.USER_NOT_EXIST_ERROR };
+            throw { status: 400, error: Msg.NO_FOUND_ERROR };
         }
     },
 };

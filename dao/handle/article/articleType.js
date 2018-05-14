@@ -5,13 +5,14 @@ export default {
 
     create: async ({ type }) => {
         let articleType = new ArticleType({
-            type
+            type,
+            status:1
         });
 
-        let _articleType = ArticleType.findbyName(type)
+        let _articleType =  await ArticleType.findByName(type)
 
         if (_articleType) {
-            throw { status: 400, error: Msg.ARTICLE_TYPE_EXIST_ERROR }
+            throw { status: 400, error: Msg.EXIST_ERROR }
         }
 
         try {
@@ -22,10 +23,10 @@ export default {
     },
 
     update: async (id, _articleType) => {
-        let articleType = ArticleType.findById(id);
+        let articleType = await ArticleType.findById(id);
 
         if (!articleType) {
-            throw { status: 404, error: Msg.ARTICLE_TYPE_NOT_EXIST_ERROR }
+            throw { status: 404, error: Msg.NO_FOUND_ERROR }
         }
 
         try {
@@ -36,22 +37,22 @@ export default {
     },
 
     fetch: async (query = {}, skip = 1, limit = 10) => {
-        return ArticleType.fetch(query, skip, limit)
+        return await ArticleType.fetch(query, skip, limit)
     },
 
     findById: async (id) => {
-        return ArticleType.findById(id)
+        return  await ArticleType.findById(id)
     },
 
     disable: async (id) => {
-        let articleType = ArticleType.findById(id);
+        let articleType = await ArticleType.findById(id);
 
         if (!articleType) {
-            throw { status: 404, error: Msg.ARTICLE_TYPE_NOT_EXIST_ERROR }
+            throw { status: 404, error: Msg.NO_FOUND_ERROR }
         }
 
         try {
-            return articleType.update({ status: 0 });
+            return await articleType.update({ status: 0 });
         } catch (error) {
             throw { status: 400, error: Msg.CREATE_ERROR }
         }

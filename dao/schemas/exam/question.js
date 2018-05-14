@@ -1,8 +1,11 @@
 import Mongoose from 'mongoose';
-import Autoincrement from '../utils/autoincrement';
+import Autoincrement from '../../utils/autoincrement';
 
 let QuestionSchema = new Mongoose.Schema({
-    id: Number,
+    id: {
+        type: Number,
+        unique: true
+    },
     title: String,
     score: Number,
     // sortnum: Number,
@@ -23,7 +26,6 @@ QuestionSchema.pre('save', async function (next) {
     if (this.isNew) {
         this.id = await Autoincrement('question');
     }
-
     next();
 })
 
@@ -41,4 +43,4 @@ QuestionSchema.statics = {
     }
 }
 
-export default  QuestionSchema;
+export default QuestionSchema;
