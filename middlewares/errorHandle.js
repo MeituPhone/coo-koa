@@ -13,4 +13,4 @@ function errorHandle() {
     }
 }
 
-module.exports = errorHandle;
+export default errorHandle;

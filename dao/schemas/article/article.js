@@ -37,10 +37,21 @@ ArticleSchema.pre('save', async function (next) {
 
 ArticleSchema.statics = {
     fetch: function (query, skip, limit) {
-        return this.find({ ...query }).skip(skip).limit(limit).sort('meta.updateAt').exec();
+        return this
+            .find({ ...query })
+            .populate('tags')
+            .populate('type')
+            .skip(skip)
+            .limit(limit)
+            .sort('meta.updateAt')
+            .exec();
     },
     findById: function (id) {
-        return this.findOne({ id: id }).exec();
+        return this
+            .findOne({ id: id })
+            .populate('tags')
+            .populate('type')
+            .exec();
     }
 }
 

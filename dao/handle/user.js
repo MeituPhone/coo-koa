@@ -1,7 +1,7 @@
 import Mongoose from 'mongoose';
 import User from '../models/user';
 import Jwt from "jsonwebtoken";
-import { TOKEN_SECRET_KEY } from '../../consts';
+import { USER_TOKEN_SECRE_KEY } from '../../consts';
 import Msg from '../../consts/msg';
 import autoincrement from '../utils/autoincrement'
 
@@ -67,7 +67,7 @@ module.exports = {
             if (flag) {
                 let token = Jwt.sign(
                     { name: user.username },
-                    TOKEN_SECRET_KEY,
+                    USER_TOKEN_SECRE_KEY,
                     { expiresIn: 60 * 60 }
                 );
                 return { token };
