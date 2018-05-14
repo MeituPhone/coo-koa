@@ -57,8 +57,11 @@ AdministratorSchema.methods = {
 
 // 静态查询方法
 AdministratorSchema.statics = {
-    fetch: function (query ,skip, limit) {
-        return this.find({...query}, {password: 0}).skip(skip).limit(parseInt(limit)).sort('meta.updateAt');
+    fetch: function (query, name, skip, limit) {
+        return this.find({...query, administrator: { $ne: name }}, {password: 0}).skip(skip).limit(parseInt(limit)).sort('meta.updateAt');
+    },
+    removeById: async function(id) {
+        return this.remove({_id: ObjectID(id)});
     },
     findByName: async function(name, checkPwd = false) {
         let options = {
@@ -73,13 +76,15 @@ AdministratorSchema.statics = {
     findById: function (id) {
         return this.findOne({_id: ObjectID(id)}, {password: 0, meta: 0});
     },
-    updateInclude: async function ({include, name, value}) {
-        let data = {};
-        if (include === 'password') {
-            value = encrypt(value);
+    updateInclude: async function ({condition, data}) {
+        let _condition = {};
+        if (condition.id) {
+            _condition._id = ObjectID(condition.id);
+        } else {
+            _condition = condition;
         }
-        data[include] = value;
-        return this.update({administrator: name}, {$set: data});
+
+        return this.update(_condition, { $set: data});
     }
 };
 

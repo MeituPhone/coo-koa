@@ -5,7 +5,17 @@ import MSG from '../../consts/msg';
 
 export default {
     // 增加数据
-    create: ({administrator, password, nickname, avatar}) => {
+    create: async ({administrator, password, nickname, avatar}) => {
+        let temp = await Administrator.findByName(administrator);
+        console.log(temp);
+        if (temp) {
+            return new Promise((resolve, reject) => {
+                reject({
+                    ...MSG.USER_EXIST_ERROR
+                });
+            });
+        }
+
         let _administrator = new Administrator({
             administrator,
             password,
@@ -24,17 +34,16 @@ export default {
             });
         });
     },
-    // 修改
-    update: ({include, value, name}) => {
-        return Administrator.updateInclude({include, value, name});
+    remove: (id) => {
+        return Administrator.removeById(id);
     },
-    // 禁用
-    disable: function(id) {
-
+    // 修改
+    update: ({condition, data}) => {
+        return Administrator.updateInclude({condition, data});
     },
     // 获取
-    fetch: function(query = {}, skip, limit) {
-        return Administrator.fetch(query, skip, limit);
+    fetch: function(query = {}, name, skip, limit) {
+        return Administrator.fetch(query, name, skip, limit);
     },
     findByName: async function (name) {
         return await Administrator.findByName(name);
