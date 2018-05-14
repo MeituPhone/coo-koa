@@ -39,7 +39,7 @@ export default {
         }
 
         if (!article) {
-            throw { stutas: 404, error: Msg.ARTICLE_NOT_EXIST_ERROR };
+            throw { stutas: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {
@@ -61,7 +61,7 @@ export default {
         let article = await Article.findById(id);
 
         if (!article) {
-            throw { status: 404, error: Msg.ARTICLE_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {

@@ -12,7 +12,7 @@ export default {
         let _articleType =  await ArticleType.findByName(type)
 
         if (_articleType) {
-            throw { status: 400, error: Msg.ARTICLE_TYPE_EXIST_ERROR }
+            throw { status: 400, error: Msg.EXIST_ERROR }
         }
 
         try {
@@ -26,7 +26,7 @@ export default {
         let articleType = await ArticleType.findById(id);
 
         if (!articleType) {
-            throw { status: 404, error: Msg.ARTICLE_TYPE_NOT_EXIST_ERROR }
+            throw { status: 404, error: Msg.NO_FOUND_ERROR }
         }
 
         try {
@@ -48,7 +48,7 @@ export default {
         let articleType = await ArticleType.findById(id);
 
         if (!articleType) {
-            throw { status: 404, error: Msg.ARTICLE_TYPE_NOT_EXIST_ERROR }
+            throw { status: 404, error: Msg.NO_FOUND_ERROR }
         }
 
         try {

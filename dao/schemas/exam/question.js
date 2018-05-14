@@ -1,5 +1,5 @@
 import Mongoose from 'mongoose';
-import Autoincrement from '../utils/autoincrement';
+import Autoincrement from '../../utils/autoincrement';
 
 let QuestionSchema = new Mongoose.Schema({
     id: {

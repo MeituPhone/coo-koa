@@ -12,7 +12,7 @@ export default {
         let _articleTag = await ArticleTag.findByName(tag);
 
         if (_articleTag) {
-            throw { status: 400, error: Msg.ARTICLE_TAG_EXIST_ERROR };
+            throw { status: 400, error: Msg.EXIST_ERROR };
         }
 
         try {
@@ -25,7 +25,7 @@ export default {
     update: async (id, _articleTag) => {
         let articleTag = await ArticleTag.findById(id);
         if (!articleTag) {
-            throw { status: 404, error: Msg.ARTICLE_TAG_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {
@@ -46,7 +46,7 @@ export default {
     disable: async (id) => {
         let articleTag = await ArticleTag.findById(id);
         if (!articleTag) {
-            throw { status: 404, error: Msg.ARTICLE_TAG_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {

@@ -1,5 +1,5 @@
-import Examination from '../models/examination';
-import Msg from '../../consts/msg';
+import Examination from '../../models/exam/examination';
+import Msg from '../../../consts/msg';
 
 export default {
 
@@ -22,7 +22,7 @@ export default {
         let _examination = { title, questions }
 
         if (!examination) {
-            throw { status: 404, error: Msg.EXAMINATION_NOT_EXIST_ERROR };
+            throw { status: 404, error: Msg.NO_FOUND_ERROR };
         }
 
         try {
@@ -40,7 +40,7 @@ export default {
         let examination =  await Examination.findById(id);
 
         if (!examination) {
-            throw { status: 404, error: Msg.EXAMINATION_NOT_EXIST_ERROR }
+            throw { status: 404, error: Msg.NO_FOUND_ERROR }
         }
         
         try {

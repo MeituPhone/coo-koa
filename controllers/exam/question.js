@@ -1,6 +1,6 @@
 import Joi from "joi";
-import Msg from '../consts/msg';
-import questionHandle from '../dao/handle/question';
+import Msg from '../../consts/msg';
+import questionHandle from '../../dao/handle/exam/question';
 
 const questionJoiSchema = Joi.object().keys({
     title: Joi.string().min(3).max(15).required(),

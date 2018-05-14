@@ -1,8 +1,8 @@
 import Router from 'koa-router';
 import passport from 'passport';
-import '../utils/passport'; 
-import { verifyToken } from "../utils/tokenManager";
-import examinationControl from '../controllers/examination'
+import '../../utils/passport';
+import { verifyToken } from "../../utils/tokenManager";
+import examinationControl from '../../controllers/exam/examination'
 
 let router = new Router({
     prefix:'/api/examination'

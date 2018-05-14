@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
-import Question from '../models/question';
-import Autoincrement from '../utils/autoincrement';
+import Question from '../../models/exam/question';
+import Autoincrement from '../../utils/autoincrement';
 
 let ExaminationSchema = new Schema({
     id: {
