@@ -56,14 +56,9 @@ export default {
     UPDATE_ERROR,
     REMOVE_ERROR,
     TOKEN_ERROR,
-    USER_EXIST_ERROR,
-    USER_NOT_EXIST_ERROR,
-
+    EXIST_ERROR,
+    NO_FOUND_ERROR,
     PASSWORD_ERROR,
     NAME_ERROR,
-
-    /**
-     * @description 参数错误
-     */
     PARAMETER_ERROR,
 };

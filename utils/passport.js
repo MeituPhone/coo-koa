@@ -10,7 +10,7 @@ import {TOKEN_SECRET_KEY} from '../consts';
 import Msg from '../consts/msg';
 
 
-passport.use('admin',new Strategy(
+passport.use('admin', new Strategy(
     
     function (token, done) {
         // 验证token

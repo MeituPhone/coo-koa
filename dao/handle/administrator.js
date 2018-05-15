@@ -7,11 +7,10 @@ export default {
     // 增加数据
     create: async ({administrator, password, nickname, avatar}) => {
         let temp = await Administrator.findByName(administrator);
-        console.log(temp);
         if (temp) {
             return new Promise((resolve, reject) => {
                 reject({
-                    ...MSG.USER_EXIST_ERROR
+                    ...MSG.EXIST_ERROR
                 });
             });
         }

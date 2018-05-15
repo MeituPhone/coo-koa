@@ -18,7 +18,7 @@ router.get('/', passport.authenticate('admin', { session: false }), verifyToken,
 router.post('/', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.create);
 
 // 用户
-router.del('/:id', passport.authenticate('bearer', { session: false }), verifyToken, administratorControl.remove);
+router.del('/:id', passport.authenticate('admin', { session: false }), verifyToken, administratorControl.remove);
 
 
 // 创建
